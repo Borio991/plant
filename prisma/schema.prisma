@@ -15,21 +15,42 @@ model Plant {
   name     String
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
+
+  materials Material[]
+
+  suppliers Supplier[]
 }
 
 model Material {
   id       String   @id @default(cuid())
   name        String
   quantity    Float
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+
+  // relation to the plant 
+  plantId String
+  plant   Plant   @relation(fields: [plantId], references: [id])
+
+  // relation to the supplier
+  // supplierId String
+  // supplier Supplier   @relation(fields: [supplierId], references: [id])
+  suppliers Supplier[]
 }
 
 model Supplier {
   id       String   @id @default(cuid())
   name        String
+
+  materials Material[]
+
+  plantId String
+  plant   Plant   @relation(fields: [plantId], references: [id])
 }
 
 model Price {
   id       String   @id @default(cuid())
   description String? 
   price       Float
+  
 }

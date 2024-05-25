@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import '../globals.css';
 import Navbar from '@/components/layout/Navbar';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Asphalt Plant Material & Production Management',
@@ -7,15 +11,15 @@ export const metadata: Metadata = {
     'Streamline the management of materials and products at your asphalt plant with our comprehensive application, designed to enhance efficiency and productivity.',
 };
 
-export default function LandingLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <>
       <Navbar />
-      <main className="min-h-screen mt-4 md:mt-6 lg:mt-8">{children}</main>
-    </div>
+      <main className="min-h-screen">{children}</main>
+    </>
   );
 }
