@@ -2,7 +2,6 @@
 
 import db from '@/prisma/db';
 import { CreatePlantFormSchema } from '@/types/types';
-import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export async function createPlant(values: z.infer<typeof CreatePlantFormSchema>) {
@@ -14,28 +13,25 @@ export async function createPlant(values: z.infer<typeof CreatePlantFormSchema>)
   return newPlant;
 }
 
-export async function EditPlant(plantId: string) {
+export async function EditPlant(plantId: string, values: z.infer<typeof CreatePlantFormSchema>) {
   const existingPlant = await db.plant.findFirst({
     where: {
       id: plantId,
     },
   });
+
   if (!existingPlant) {
-    return NextResponse.json({
-      status: 404,
-      body: {
-        message: 'Plant not found',
-      },
-    });
+    return null;
   }
-  return await db.plant.update({
+  const updatedPlant = await db.plant.update({
     where: {
       id: existingPlant.id,
     },
     data: {
-      name: existingPlant.name,
+      name: values.name,
     },
   });
+  return updatedPlant;
 }
 
 export async function deletePlant(plantId: string) {

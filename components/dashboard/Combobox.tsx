@@ -17,23 +17,26 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Plant } from '@prisma/client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 interface Props {
   items: Plant[];
 }
 
 export default function ComboboxDemo({ items }: Props) {
+  const params = useParams();
+  console.log('params :', params);
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState(params.plantId);
   const router = useRouter();
+  console.log('value :', value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="min-w-[250px] justify-start">
           <ChevronsUpDown className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-          <div className="mr-2">{value ? items.find((item) => item.name === value)?.name : 'اختر محطة'}</div>
+          <div className="mr-2">{value ? items.find((item) => item.id === value)?.name : 'اختر محطة'}</div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-[250px] p-0">
@@ -45,7 +48,7 @@ export default function ComboboxDemo({ items }: Props) {
               {items.map((item) => (
                 <CommandItem
                   key={item.id}
-                  value={item.name}
+                  value={item.id}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? '' : currentValue);
                     setOpen(false);

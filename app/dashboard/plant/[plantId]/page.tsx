@@ -8,6 +8,7 @@ interface Props {
     plantId: string;
   };
 }
+export const dynamic = 'force-dynamic';
 
 async function PlantDetailsPage({ params }: Props) {
   const plant = await db.plant.findFirst({

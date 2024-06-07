@@ -24,16 +24,6 @@ function PlantCard({ data }: Props) {
     },
   });
 
-  const EditPlantMutation = useMutation({
-    mutationFn: async (id: string) => EditPlant(id),
-    onSuccess: () => {
-      router.push('/dashboard/plant/create/' + data.id);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
   return (
     <Card>
       <CardHeader>
@@ -49,11 +39,7 @@ function PlantCard({ data }: Props) {
           >
             Delete
           </Button>
-          <Button
-            variant={'outline'}
-            onClick={() => EditPlantMutation.mutate(data.id)}
-            disabled={EditPlantMutation.isPending}
-          >
+          <Button variant={'outline'} onClick={() => router.push('/dashboard/plant/create/' + data?.id)}>
             Update
           </Button>
         </div>

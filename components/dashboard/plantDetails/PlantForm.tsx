@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CreatePlantFormSchema } from '@/types/types';
-import { createPlant } from '@/actions/plantActions';
+import { EditPlant, createPlant } from '@/actions/plantActions';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Plant } from '@prisma/client';
@@ -25,7 +25,7 @@ function PlantForm({ plant }: Props) {
     },
   });
 
-  const { mutate, isError, isPending } = useMutation({
+  const createPlantMutation = useMutation({
     mutationFn: async (values: z.infer<typeof CreatePlantFormSchema>) => createPlant(values),
     onSuccess: (data) => {
       router.push('/dashboard/plant/' + data.id);
@@ -36,10 +36,26 @@ function PlantForm({ plant }: Props) {
     },
   });
 
+  const editPlantMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof CreatePlantFormSchema>) => await EditPlant(plant!.id, values),
+    onSuccess: (data) => {
+      router.push('/dashboard/plant/' + data?.id);
+      router.refresh();
+      form.reset();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const action = plant ? 'تعديل' : 'انشاء محطة';
 
   async function onSubmit(values: z.infer<typeof CreatePlantFormSchema>) {
-    mutate(values);
+    if (!plant) {
+      createPlantMutation.mutate(values);
+    } else {
+      editPlantMutation.mutate(values);
+    }
   }
   return (
     <Container>
@@ -59,10 +75,10 @@ function PlantForm({ plant }: Props) {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={createPlantMutation.isPending}>
             {action}
           </Button>
-          {isError && <p>Something went wrong</p>}
+          {createPlantMutation.isError && <p>Something went wrong</p>}
         </form>
       </Form>
     </Container>
