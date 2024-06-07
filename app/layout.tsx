@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { ReactQueryClientProvider } from '@/providers/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'Asphalt Plant Material & Production Management',
@@ -13,8 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="rtl">{children}</body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en" className="dark">
+        <body className="rtl">{children}</body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

@@ -13,12 +13,15 @@ datasource db {
 model Plant {
   id       String   @id @default(cuid())
   name     String
+  
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
 
   materials Material[]
 
   suppliers Supplier[]
+
+  price Price[]
 }
 
 model Material {
@@ -33,14 +36,17 @@ model Material {
   plant   Plant   @relation(fields: [plantId], references: [id])
 
   // relation to the supplier
-  // supplierId String
-  // supplier Supplier   @relation(fields: [supplierId], references: [id])
-  suppliers Supplier[]
+  supplierId String
+  supplier Supplier   @relation(fields: [supplierId], references: [id])
+  price Price?
 }
 
 model Supplier {
   id       String   @id @default(cuid())
   name        String
+
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
 
   materials Material[]
 
@@ -52,5 +58,14 @@ model Price {
   id       String   @id @default(cuid())
   description String? 
   price       Float
+  effective_date DateTime
+  expiry_date DateTime
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
   
+  materialId String @unique
+  material   Material   @relation(fields: [materialId], references: [id])
+
+  plantId String
+  plant   Plant   @relation(fields: [plantId], references: [id])
 }

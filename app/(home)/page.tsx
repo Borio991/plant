@@ -1,6 +1,5 @@
 import Container from '@/components/layout/Container';
-import { Button, buttonVariants } from '@/components/ui/button';
-import db from '@/prisma/db';
+import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default async function Home() {
