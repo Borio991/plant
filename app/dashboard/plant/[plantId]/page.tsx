@@ -1,6 +1,7 @@
 import Container from '@/components/layout/Container';
 import db from '@/prisma/db';
 import PlantCard from '@/components/dashboard/plantDetails/PlantCard';
+import Link from 'next/link';
 
 interface Props {
   params: {
@@ -21,6 +22,7 @@ async function PlantDetailsPage({ params }: Props) {
         <div className="flex h-screen flex-col items-center justify-center">
           <h1 className="text-3xl font-bold">محطة</h1>
           <p className="text-lg">لا يوجد محطات</p>
+          <Link href={'dashboard/plant/create/new'}>انشئ محطة</Link>
         </div>
       </Container>
     );
